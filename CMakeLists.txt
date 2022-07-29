@@ -26,7 +26,7 @@ target_sources(imgui PRIVATE
 )
 #ImGui
 
-include_directories("$ENV{DXSDK_DIR}/Include")
+#include_directories("$ENV{DXSDK_DIR}/Include")
 #link_directories("$ENV{DXSDK_DIR}/Lib/x86")
 
 add_library(${PROJECT_NAME} SHARED "fafmoholog.cpp")
