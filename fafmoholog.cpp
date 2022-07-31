@@ -82,6 +82,7 @@ namespace Moho
 
     void Log::SaveSettings()
     {
+        file.read(ini);
         ini["MohoLog"]["FontName"] = FontName;
         ini["MohoLog"]["FontSize"] = std::to_string(FontSize);
         ini["MohoLog"]["Filter"] = Filter.InputBuf;
