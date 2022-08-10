@@ -28,10 +28,10 @@ namespace Moho
             if (msg == WM_KEYDOWN && wParam == VK_F9)
             {
                 Render = !Render;
-                return 0; // 1 = block key
+                return 1; // 1 = block key
             }
             else if (msg == WM_KEYUP && wParam == VK_F9)
-                return 0; // 1 = block key
+                return 1; // 1 = block key
             return 0;
         };
 
@@ -78,6 +78,7 @@ namespace Moho
             FontSize = 14.0f;
         }
         strcpy_s(Filter.InputBuf, 256, ini["MohoLog"]["Filter"].c_str());
+        Filter.Build();
     }
 
     void Log::SaveSettings()
@@ -277,7 +278,8 @@ namespace Moho
                         {
                             int len = static_cast<int>(line_end - line_start);
                             char *buffer = new char[len + 1];
-                            strcpy_s(buffer, len + 1, line_start);
+                            memcpy(buffer, line_start, len);
+                            buffer[len] = '\0';
                             ImGui::SetClipboardText(buffer);
                             delete[] buffer;
                         }
@@ -394,6 +396,7 @@ namespace Moho
             {
                 log.Add("[ERROR]: %s\n", str);
             }
-            hook.get_trampoline()(a1, a2);
+            return;
+            // hook.get_trampoline()(a1, a2);
         }};
 }

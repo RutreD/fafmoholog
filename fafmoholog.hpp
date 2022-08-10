@@ -3,14 +3,14 @@
 #define MINI_CASE_SENSITIVE
 #include "ini.h"
 
-#define USE_KTHOOKWNDPROC // scfa doesnt call standart wndproc for mouse events, need install custom hook
+#define USE_KTHOOKWNDPROC // scfa doesn't call standard wndproc for mouse events, need install custom hook
 #include "imgui_hook.hpp"
 
 namespace Moho
 {
     kthook::kthook_simple<LRESULT(__thiscall *)(void *, UINT, WPARAM, LPARAM)> scfa_wndproc_hook{0x96D110};
     ImGui::Hook::D3D9 d3d9hook{};
-    
+
     class Log
     {
         mINI::INIFile file{"imgui.ini"};
