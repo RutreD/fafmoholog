@@ -298,12 +298,33 @@ namespace Moho
                     {
                         const char *line_start = buf + LineOffsets[line_no];
                         const char *line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
-                        if (line_start[1] == 'D')
+                        static bool colorPushed = false;
+                        if(line_start[1] == 'L' && colorPushed)
+                        {
+                            ImGui::PopStyleColor(1);
+                            colorPushed = false;
+                        }
+                        else if (line_start[1] == 'D')
+                        {
+                            if (colorPushed)
+                                ImGui::PopStyleColor(1);
                             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
+                            colorPushed = true;
+                        }
                         else if (line_start[1] == 'E')
+                        {
+                            if (colorPushed)
+                                ImGui::PopStyleColor(1);
                             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.0f, 0.0f, 1.0f));
+                            colorPushed = true;
+                        }
                         else if (line_start[1] == 'W')
+                        {
+                            if (colorPushed)
+                                ImGui::PopStyleColor(1);
                             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.85f, 0.0f, 1.0f));
+                            colorPushed = true;
+                        }
                         ImGui::TextUnformatted(line_start, line_end);
                         if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
                         {
@@ -314,8 +335,6 @@ namespace Moho
                             ImGui::SetClipboardText(buffer);
                             delete[] buffer;
                         }
-                        if (line_start[1] == 'D' || line_start[1] == 'E' || line_start[1] == 'W')
-                            ImGui::PopStyleColor(1);
                     }
                 }
                 clipper.End();
