@@ -259,6 +259,7 @@ namespace Moho
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             const char *buf = Buf.begin();
             const char *buf_end = Buf.end();
+            static bool colorPushed = false;
             if (Filter.IsActive())
             {
                 for (int line_no = 0; line_no < LineOffsets.Size; line_no++)
@@ -298,7 +299,6 @@ namespace Moho
                     {
                         const char *line_start = buf + LineOffsets[line_no];
                         const char *line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
-                        static bool colorPushed = false;
                         if(line_start[1] == 'L' && colorPushed)
                         {
                             ImGui::PopStyleColor(1);
@@ -338,6 +338,10 @@ namespace Moho
                     }
                 }
                 clipper.End();
+            }
+            if (colorPushed) {
+                ImGui::PopStyleColor(1);
+                colorPushed = false;
             }
             ImGui::PopStyleVar();
             if (AutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
